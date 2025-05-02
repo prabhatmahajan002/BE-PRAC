@@ -1,0 +1,193 @@
+student@ioe-aids-171:~$ start-dfs.sh
+Starting namenodes on [localhost]
+localhost: namenode is running as process 22974.  Stop it first and ensure /tmp/hadoop-student-namenode.pid file is empty before retry.
+pdsh@ioe-aids-171: localhost: ssh exited with exit code 1
+Starting datanodes
+localhost: datanode is running as process 23157.  Stop it first and ensure /tmp/hadoop-student-datanode.pid file is empty before retry.
+pdsh@ioe-aids-171: localhost: ssh exited with exit code 1
+Starting secondary namenodes [ioe-aids-171]
+ioe-aids-171: secondarynamenode is running as process 23375.  Stop it first and ensure /tmp/hadoop-student-secondarynamenode.pid file is empty before retry.
+pdsh@ioe-aids-171: ioe-aids-171: ssh exited with exit code 1
+student@ioe-aids-171:~$ start-yarn.sh
+Starting resourcemanager
+resourcemanager is running as process 23583.  Stop it first and ensure /tmp/hadoop-student-resourcemanager.pid file is empty before retry.
+Starting nodemanagers
+localhost: nodemanager is running as process 23921.  Stop it first and ensure /tmp/hadoop-student-nodemanager.pid file is empty before retry.
+pdsh@ioe-aids-171: localhost: ssh exited with exit code 1
+student@ioe-aids-171:~$ jps
+23921 NodeManager
+23157 DataNode
+31498 Jps
+22974 NameNode
+23583 ResourceManager
+23375 SecondaryNameNode
+student@ioe-aids-171:~$ nano mapper.py
+student@ioe-aids-171:~$ nano reducer.py
+student@ioe-aids-171:~$ nano a.csv
+student@ioe-aids-171:~$ nano b.csv
+student@ioe-aids-171:~$ hdfs dfsadmin -safemode leave
+Safe mode is OFF
+student@ioe-aids-171:~$ hadoop fs -mkdir -p /input
+hadoop fs -put -f a.csv /input/
+hadoop fs -put -f b.csv /input/
+student@ioe-aids-171:~$ hadoop fs -rm -r /output_matrix
+Deleted /output_matrix
+student@ioe-aids-171:~$ hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+-files mapper.py,reducer.py \
+-mapper mapper.py \
+-reducer reducer.py \
+-input /input \
+-output /output_matrix
+packageJobJar: [/tmp/hadoop-unjar15890206212300131667/] [] /tmp/streamjob11888549119364751381.jar tmpDir=null
+2025-04-30 14:28:58,109 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at /0.0.0.0:8032
+2025-04-30 14:28:58,192 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at /0.0.0.0:8032
+2025-04-30 14:28:58,299 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/student/.staging/job_1746001991099_0007
+2025-04-30 14:28:58,460 INFO mapred.FileInputFormat: Total input files to process : 3
+2025-04-30 14:28:58,480 INFO mapreduce.JobSubmitter: number of splits:3
+2025-04-30 14:28:58,993 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1746001991099_0007
+2025-04-30 14:28:58,993 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2025-04-30 14:28:59,069 INFO conf.Configuration: resource-types.xml not found
+2025-04-30 14:28:59,069 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2025-04-30 14:28:59,095 INFO impl.YarnClientImpl: Submitted application application_1746001991099_0007
+2025-04-30 14:28:59,109 INFO mapreduce.Job: The url to track the job: http://ioe-aids-171:8088/proxy/application_1746001991099_0007/
+2025-04-30 14:28:59,110 INFO mapreduce.Job: Running job: job_1746001991099_0007
+2025-04-30 14:29:03,152 INFO mapreduce.Job: Job job_1746001991099_0007 running in uber mode : false
+2025-04-30 14:29:03,153 INFO mapreduce.Job:  map 0% reduce 0%
+2025-04-30 14:29:07,186 INFO mapreduce.Job:  map 100% reduce 0%
+2025-04-30 14:29:11,198 INFO mapreduce.Job:  map 100% reduce 100%
+2025-04-30 14:29:12,205 INFO mapreduce.Job: Job job_1746001991099_0007 completed successfully
+2025-04-30 14:29:12,255 INFO mapreduce.Job: Counters: 54
+	File System Counters
+		FILE: Number of bytes read=198
+		FILE: Number of bytes written=1119845
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=375
+		HDFS: Number of bytes written=36
+		HDFS: Number of read operations=14
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=3
+		Launched reduce tasks=1
+		Data-local map tasks=3
+		Total time spent by all maps in occupied slots (ms)=6198
+		Total time spent by all reduces in occupied slots (ms)=1246
+		Total time spent by all map tasks (ms)=6198
+		Total time spent by all reduce tasks (ms)=1246
+		Total vcore-milliseconds taken by all map tasks=6198
+		Total vcore-milliseconds taken by all reduce tasks=1246
+		Total megabyte-milliseconds taken by all map tasks=6346752
+		Total megabyte-milliseconds taken by all reduce tasks=1275904
+	Map-Reduce Framework
+		Map input records=10
+		Map output records=16
+		Map output bytes=160
+		Map output materialized bytes=210
+		Input split bytes=259
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=4
+		Reduce shuffle bytes=210
+		Reduce input records=16
+		Reduce output records=4
+		Spilled Records=32
+		Shuffled Maps =3
+		Failed Shuffles=0
+		Merged Map outputs=3
+		GC time elapsed (ms)=97
+		CPU time spent (ms)=1650
+		Physical memory (bytes) snapshot=1127616512
+		Virtual memory (bytes) snapshot=11049549824
+		Total committed heap usage (bytes)=855638016
+		Peak Map Physical memory (bytes)=308523008
+		Peak Map Virtual memory (bytes)=2764963840
+		Peak Reduce Physical memory (bytes)=213360640
+		Peak Reduce Virtual memory (bytes)=2762592256
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=116
+	File Output Format Counters 
+		Bytes Written=36
+2025-04-30 14:29:12,255 INFO streaming.StreamJob: Output directory: /output_matrix
+student@ioe-aids-171:~$ hadoop fs -cat /output_matrix/part-00000
+0,0	17.0
+0,1	23.0
+1,0	39.0
+1,1	53.0
+
+
+
+
+
+
+
+
+
+
+
+#!/usr/bin/env python3
+import sys
+for line in sys.stdin:
+    tokens = line.strip().split(',')
+    if tokens[0] == 'A':
+        for k in range(0, 2):  # assuming output matrix has 2 columns
+            print(f"{tokens[1]},{k}\tA,{tokens[2]},{tokens[3]}")
+    elif tokens[0] == 'B':
+        for i in range(0, 2):  # assuming output matrix has 2 rows
+            print(f"{i},{tokens[2]}\tB,{tokens[1]},{tokens[3]}")
+
+mapperpppppppp
+
+
+
+#!/usr/bin/env python3
+import sys
+from collections import defaultdict
+
+current_key = None
+A_vals = defaultdict(float)
+B_vals = defaultdict(float)
+
+for line in sys.stdin:
+    key, value = line.strip().split('\t')
+    matrix, index, val = value.split(',')
+
+    if current_key and current_key != key:
+        result = sum(A_vals[k] * B_vals[k] for k in A_vals if k in B_vals)
+        print(f"{current_key}\t{result}")
+        A_vals.clear()
+        B_vals.clear()
+
+    current_key = key
+    if matrix == 'A':
+        A_vals[index] = float(val)
+    else:
+        B_vals[index] = float(val)
+
+if current_key:
+    result = sum(A_vals[k] * B_vals[k] for k in A_vals if k in B_vals)
+    print(f"{current_key}\t{result}")
+
+reducer
+
+
+
+A,0,0,1
+A,0,1,2
+A,1,0,3
+A,1,1,4
+Matrix B (b.csv)
+B,0,0,5
+B,1,0,6
+B,0,1,7
+B,1,1,8
+
