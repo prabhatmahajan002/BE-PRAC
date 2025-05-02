@@ -1,0 +1,196 @@
+● mongod.service 
+
+
+
+student@ioe-aids-157:~$ mongosh
+Current Mongosh Log ID:	6811fd53bafdf2c1c534ee4f
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
+Using MongoDB:		5.0.12
+Using Mongosh:		1.5.4
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2025-04-30T21:27:49.061+05:30: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2025-04-30T21:27:49.286+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+   
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+   
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> use studentDB
+switched to db studentDB
+studentDB> db.createCollection("students")
+{ ok: 1 }
+studentDB> db.students.insertOne({
+...   rollno: 1,
+...   name: "Ravi",
+...   marks: 85
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId("6811fd66d8bf02de44966083")
+}
+studentDB> db.students.insertMany([
+...   {rollno: 2, name: "Sneha", marks: 90},
+...   {rollno: 3, name: "Amit", marks: 75},
+...   {rollno: 4, name: "Priya", marks: 82},
+...   {rollno: 5, name: "Karan", marks: 60, status: "pass"}
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("6811fd6bd8bf02de44966084"),
+    '1': ObjectId("6811fd6bd8bf02de44966085"),
+    '2': ObjectId("6811fd6bd8bf02de44966086"),
+    '3': ObjectId("6811fd6bd8bf02de44966087")
+  }
+}
+studentDB> db.students.find()
+[
+  {
+    _id: ObjectId("6811fd66d8bf02de44966083"),
+    rollno: 1,
+    name: 'Ravi',
+    marks: 85
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966084"),
+    rollno: 2,
+    name: 'Sneha',
+    marks: 90
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966085"),
+    rollno: 3,
+    name: 'Amit',
+    marks: 75
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966086"),
+    rollno: 4,
+    name: 'Priya',
+    marks: 82
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966087"),
+    rollno: 5,
+    name: 'Karan',
+    marks: 60,
+    status: 'pass'
+  }
+]
+studentDB> db.students.find({rollno: 2})
+[
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966084"),
+    rollno: 2,
+    name: 'Sneha',
+    marks: 90
+  }
+]
+studentDB> db.students.find({marks: {$gt: 80}})
+[
+  {
+    _id: ObjectId("6811fd66d8bf02de44966083"),
+    rollno: 1,
+    name: 'Ravi',
+    marks: 85
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966084"),
+    rollno: 2,
+    name: 'Sneha',
+    marks: 90
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966086"),
+    rollno: 4,
+    name: 'Priya',
+    marks: 82
+  }
+]
+studentDB> db.students.find({status: "pass"})
+[
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966087"),
+    rollno: 5,
+    name: 'Karan',
+    marks: 60,
+    status: 'pass'
+  }
+]
+studentDB> db.students.updateOne(
+...   {rollno: 3},
+...   {$set: {marks: 80}}
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+studentDB> db.students.updateMany(
+...   {marks: {$lt: 65}},
+...   {$set: {status: "fail"}}
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+studentDB> db.students.deleteOne({rollno: 1})
+{ acknowledged: true, deletedCount: 1 }
+studentDB> db.students.deleteMany({status: "fail"})
+{ acknowledged: true, deletedCount: 1 }
+studentDB> db.student.find()
+
+studentDB> ;
+
+studentDB> db.student.find();
+
+studentDB> db.students.find()
+[
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966084"),
+    rollno: 2,
+    name: 'Sneha',
+    marks: 90
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966085"),
+    rollno: 3,
+    name: 'Amit',
+    marks: 80
+  },
+  {
+    _id: ObjectId("6811fd6bd8bf02de44966086"),
+    rollno: 4,
+    name: 'Priya',
+    marks: 82
+  }
+]
+studentDB> 
+
+
+
+
+
+
+mongod.service mongosh  test> use studentDB
+switched to db studentDB
+studentDB> db.createCollection("students")
+
